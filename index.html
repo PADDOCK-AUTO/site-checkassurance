@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CheckAssurance - Vos garanties d'assurance analysées en local</title>
+    <style>
+        :root {
+            --bg-main: #000000;
+            --bg-card: #1c1c1e;
+            --accent-blue: #0a84ff;
+            --accent-blue-hover: #0071e3;
+            --text-primary: #ffffff;
+            --text-secondary: #8e8e93;
+            --border-color: #2c2c2e;
+            --warning-orange: #ff9f0a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 1.2rem;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .hero {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+
+        .badge-app {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background-color: rgba(10, 132, 255, 0.15);
+            color: var(--accent-blue);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .cta-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .cta-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 0.9rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background-color 0.2s;
+        }
+
+        .cta-btn:hover {
+            background-color: var(--accent-blue-hover);
+        }
+
+        .price-tag {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .features {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1.8rem;
+            border-radius: 16px;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .page-section {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem 1.5rem;
+            background-color: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        .page-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .update-date {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.8rem;
+        }
+
+        .page-section h3 {
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+            margin: 1.5rem 0 0.5rem 0;
+        }
+
+        .page-section p, .page-section ul {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-section ul {
+            padding-left: 1.2rem;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .form-group input, .form-group textarea {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        footer {
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.8rem; }
+            .nav-links a { margin-left: 0.6rem; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="#" class="logo" onclick="showSection('landing')">
+                <div class="logo-icon">📄</div>
+                CheckAssurance
+            </a>
+            <div class="nav-links">
+                <a href="#features" onclick="showSection('landing')">Fonctionnalités</a>
+                <a href="#privacy" onclick="showSection('privacy')">Confidentialité</a>
+                <a href="#terms" onclick="showSection('terms')">CGU / CGV</a>
+                <a href="#support" onclick="showSection('support')">Support</a>
+            </div>
+        </nav>
+    </header>
+
+    <div id="landing-section">
+        <section class="hero">
+            <div class="badge-app">Intelligence Artificielle Locale (Gemma)</div>
+            <h1>Interrogez vos contrats d'assurance en toute confidentialité.</h1>
+            <p>Importez vos tableaux de garanties et conditions générales. L'IA embarquée Gemma analyse vos documents directement sur votre iPhone, sans aucun serveur distant.</p>
+            
+            <div class="cta-group">
+                <a href="#" class="cta-btn">Télécharger sur l'App Store</a>
+                <span class="price-tag">9,99 € — Achat unique, zéro abonnement</span>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="feature-card">
+                <div class="card-icon">🔒</div>
+                <h3>100% Local & Privé</h3>
+                <p>Grâce au modèle Gemma exécuté directement sur votre iPhone, vos contrats et données personnelles ne quittent jamais votre téléphone.</p>
+            </div>
+            <div class="feature-card">
+                <div class="card-icon">🔍</div>
+                <h3>OCR & Indexation</h3>
+                <p>Vos devis, tableaux de garanties et notices d'information sont automatiquement numérisés et prêts à être interrogés en langage naturel.</p>
+            </div>
+            <div class="feature-card">
+                <div class="card-icon">📑</div>
+                <h3>Extrait & Preuve</h3>
+                <p>Obtenez une réponse claire sur votre niveau de couverture avec citation directe de la page et du passage correspondant dans vos documents.</p>
+            </div>
+        </section>
+    </div>
+
+    <section id="privacy" class="page-section">
+        <h2>Politique de Confidentialité</h2>
+        <p class="update-date">Dernière mise à jour : 6 septembre 2026</p>
+
+        <h3>1. Traitement 100% On-Device (Local)</h3>
+        <p>L'application <strong>CheckAssurance</strong> a été conçue selon le principe de la confidentialité dès la conception (Privacy by Design). Toutes les opérations de reconnaissance d'image (OCR), d'indexation de texte et d'analyse par le modèle d'IA local (Gemma) sont effectuées exclusivement sur le processeur de votre appareil iOS.</p>
+
+        <h3>2. Collecte et Transmission des Données</h3>
+        <p>Nous ne collectons, ne stockons, ne transmettons et ne vendons <strong>aucune donnée personnelle</strong>. Vos contrats d'assurance, mutuelles, échanges avec le chat et documents scannés ne sont jamais envoyés vers des serveurs externes.</p>
+
+        <h3>3. Achats Intégrés</h3>
+        <p>L me paiement unique de 9,99 € est intégralement géré par les services sécurisés de l'Apple App Store. Nous n'avons aucun accès à vos informations bancaires.</p>
+    </section>
+
+    <section id="terms" class="page-section">
+        <h2>Conditions Générales d'Utilisation et de Vente (CGU / CGV)</h2>
+        <p class="update-date">Dernière mise à jour : 6 septembre 2026</p>
+
+        <h3>1. Objet du Service</h3>
+        <p>CheckAssurance offre un outil d'analyse textuelle assisté par intelligence artificielle pour faciliter la recherche d'informations au sein de vos documents d'assurance.</p>
+
+        <h3>2. Valeur des Informations — Avertissement Légal</h3>
+        <p>L'application fournit des extraits et des résumés automatisés <strong>à titre purement indicatif</strong>. Les réponses apportées par l'IA ne remplacent en aucun cas l'avis officiel de votre compagnie d'assurance ou le texte original de vos contrats.</p>
+
+        <h3>3. Tarif et Conditions de Vente</h3>
+        <p>L'application est acquise via un paiement unique de 9,99 € sur l'App Store. Aucun abonnement récurrent n'est appliqué.</p>
+
+        <h3>4. Propriété Intellectuelle</h3>
+        <p>La marque, l'interface graphique et le code source de CheckAssurance sont protégés. Toute reproduction est interdite.</p>
+    </section>
+
+    <section id="support" class="page-section">
+        <h2>Support & Assistance</h2>
+        <p>Vous rencontrez une difficulté lors de l'importation d'un document ou souhaitez poser une question ? Notre équipe est à votre disposition.</p>
+
+        <h3>Questions Fréquentes</h3>
+        <ul>
+            <li><strong>Mes documents santé/auto sont-ils envoyés en ligne ?</strong> Non, aucun document ne quitte votre iPhone. Tout fonctionne même sans connexion Internet.</li>
+            <li><strong>L'application fonctionne-t-elle avec tous les PDF ?</strong> Oui, l'OCR intégré traite aussi bien les PDF numériques que les photos de documents papier.</li>
+        </ul>
+
+        <form class="contact-form" onsubmit="event.preventDefault(); alert('Votre message a été transmis au support.');">
+            <div class="form-group">
+                <label for="email">Votre adresse e-mail</label>
+                <input type="email" id="email" required placeholder="nom@exemple.com">
+            </div>
+            <div class="form-group">
+                <label for="message">Description de votre demande</label>
+                <textarea id="message" required placeholder="Expliquez-nous votre problème..."></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Envoyer au support</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 CheckAssurance. Tous droits réservés.</p>
+        <p>
+            <a href="#privacy" onclick="showSection('privacy')">Confidentialité</a> • 
+            <a href="#terms" onclick="showSection('terms')">CGU / CGV</a> • 
+            <a href="#support" onclick="showSection('support')">Support</a>
+        </p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            const landing = document.getElementById('landing-section');
+            const sections = document.querySelectorAll('.page-section');
+
+            if (sectionId === 'landing') {
+                landing.style.display = 'block';
+                sections.forEach(s => s.classList.remove('active'));
+            } else {
+                landing.style.display = 'none';
+                sections.forEach(s => {
+                    if (s.id === sectionId) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (['privacy', 'terms', 'support'].includes(hash)) {
+                showSection(hash);
+            }
+        });
+    </script>
+</body>
+</html>
